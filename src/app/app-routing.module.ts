@@ -8,6 +8,10 @@ const routes: Routes = [
     loadChildren: () => import('./grot/grot.module').then(m => m.GrotModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'grot',
+    loadChildren: () => import('./grot/grot.module').then(m => m.GrotModule),
+  },
   { 
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) 

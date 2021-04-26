@@ -21,6 +21,7 @@
       "dom"
     ]
   },
+  "exclude": [ "/src/environments/environment.template.ts" ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

@@ -12,12 +12,20 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputTextModule } from 'primeng/inputtext';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { ToastModule } from 'primeng/toast';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestComponent } from './components/test/test.component';
+import { HttpClientModule } from '@angular/common/http';
+import { LoadParameterComponent } from './components/load-parameter/load-parameter.component';
 
 @NgModule({
-  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent],
+  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent],
   imports: [
     CommonModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     GrotRoutingModule,
@@ -26,7 +34,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ToolbarModule,
     ButtonModule,
     MultiSelectModule,
-    FileUploadModule
+    FileUploadModule,
+    InputTextModule,
+    ColorPickerModule,
+    ToastModule
   ]
 })
 export class GrotModule { }

@@ -2,15 +2,21 @@
     <div class="p-field p-col-6" *ngFor="let parameter of parameters; let i = index">
         <label for="state">{{ parameter.displayName }}</label>
         <ng-container *ngIf="parameter.type === 'select'">
-        <p-dropdown [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []" placeholder="Select..."
-            optionLabel="name" [formControl]="getControl(i)"></p-dropdown>
+            <p-dropdown [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
+                placeholder="Select..." optionLabel="name" [formControl]="getControl(i)"></p-dropdown>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'number'">
-        <p-inputNumber mode="decimal" [showButtons]="true" [formControl]="getControl(i)"></p-inputNumber>
+            <p-inputNumber mode="decimal" [showButtons]="true" [formControl]="getControl(i)" [minFractionDigits]="2"></p-inputNumber>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'multiSelect'">
-        <p-multiSelect  [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []" placeholder="Select few..."
-            optionLabel="name" [formControl]="getControl(i)"></p-multiSelect >
+            <p-multiSelect [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
+                placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)"></p-multiSelect>
+        </ng-container>
+        <ng-container *ngIf="parameter.type === 'text'">
+            <input type="text" pInputText [formControl]="getControl(i)" placeholder="Project name"/>
+        </ng-container>
+        <ng-container *ngIf="parameter.type === 'load'">
+            <app-load-parameter [formControl]="getControl(i)"></app-load-parameter>
         </ng-container>
     </div>
 </div>

@@ -61,6 +61,18 @@ export class InputParametersComponent implements OnInit {
                 parameterValue.values.push((formValue as number).toString());
               }
             }
+            break;            
+            case 'text': {
+              if(formValue){
+                parameterValue.values.push(formValue);
+              }
+            }
+            break;
+            case 'load': {
+              if(formValue){
+                parameterValue.values.push(`x ${formValue[0]} y ${formValue[1]} magenta`)
+              }
+            }
           }
 
           parameterValues.push(parameterValue);

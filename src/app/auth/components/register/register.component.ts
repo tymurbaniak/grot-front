@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
   public onSubmit(): void {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
@@ -55,6 +54,7 @@ export class RegisterComponent implements OnInit {
         error: error => {
           this.errors.push({severity:'error', summary:'Error', detail:error.message});
           this.loading = false;
+          console.error(error);
         }
       });
   }
