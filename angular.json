@@ -36,6 +36,14 @@
             "scripts": []
           },
           "configurations": {
+            "no-docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.no-docker.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -71,6 +79,9 @@
             "browserTarget": "grot-front:build"
           },
           "configurations": {
+            "no-docker": {
+              "browserTarget": "grot-front:build:no-docker"
+            },
             "production": {
               "browserTarget": "grot-front:build:production"
             }

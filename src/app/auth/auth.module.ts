@@ -21,10 +21,13 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [
+    LoginComponent,
+    RegisterComponent
+  ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
     HttpClientModule,
     AuthRoutingModule,
     PasswordModule,

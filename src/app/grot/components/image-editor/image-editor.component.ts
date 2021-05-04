@@ -3,6 +3,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { ParameterValue } from '../../models/parameter-value';
 import { ComService } from '../../services/com.service';
 import { ProcessService } from '../../services/process.service';
+import * as signalR from "@microsoft/signalr";
 
 @Component({
   selector: 'app-image-editor',
@@ -129,6 +130,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     if(this.canvas){
       const canvasDataUrl = this.canvas.nativeElement.toDataURL();
 
+      
       this.processService.process(this.inputParameters, canvasDataUrl).subscribe(result => {
         console.error(result);
       });

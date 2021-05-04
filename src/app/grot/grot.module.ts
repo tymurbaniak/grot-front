@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestComponent } from './components/test/test.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoadParameterComponent } from './components/load-parameter/load-parameter.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent],
@@ -37,7 +38,8 @@ import { LoadParameterComponent } from './components/load-parameter/load-paramet
     FileUploadModule,
     InputTextModule,
     ColorPickerModule,
-    ToastModule
+    ToastModule,
+    AuthModule
   ]
 })
 export class GrotModule { }
