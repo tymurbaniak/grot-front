@@ -13,12 +13,12 @@ import { DividerModule } from 'primeng/divider';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthenticationService } from './services/authentication.service';
-import { appInitializer } from './services/app-init';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { appInitializer } from './services/app-init';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,6 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,
     AuthRoutingModule,
     PasswordModule,
     InputTextModule,
@@ -39,9 +38,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     MessageModule
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-  ]
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] }    
+  ],
 })
 export class AuthModule { }

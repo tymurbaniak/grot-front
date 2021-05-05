@@ -15,18 +15,19 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestComponent } from './components/test/test.component';
-import { HttpClientModule } from '@angular/common/http';
 import { LoadParameterComponent } from './components/load-parameter/load-parameter.component';
 import { AuthModule } from '../auth/auth.module';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component';
+
 
 @NgModule({
-  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent],
+  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent, ProjectsListComponent],
   imports: [
-    CommonModule,
-    HttpClientModule,
+    CommonModule,    
     FormsModule,
     ReactiveFormsModule,
     GrotRoutingModule,
@@ -39,7 +40,8 @@ import { AuthModule } from '../auth/auth.module';
     InputTextModule,
     ColorPickerModule,
     ToastModule,
-    AuthModule
-  ]
+    AuthModule,
+    PanelModule
+  ]  
 })
 export class GrotModule { }

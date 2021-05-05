@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { InputParameterDefinition } from '../models/parameter';
 import { ParameterValue } from '../models/parameter-value';
 import { ProcessCall } from '../models/process-call';
 

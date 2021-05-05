@@ -4,6 +4,7 @@ import { ParameterValue } from '../../models/parameter-value';
 import { ComService } from '../../services/com.service';
 import { ProcessService } from '../../services/process.service';
 import * as signalR from "@microsoft/signalr";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-image-editor',
@@ -39,7 +40,8 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
 
   constructor(
     private processService: ProcessService,
-    private comService: ComService
+    private comService: ComService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -127,14 +129,17 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   public onProcessClicked($event: any): void {
-    if(this.canvas){
+    if (this.canvas) {
       const canvasDataUrl = this.canvas.nativeElement.toDataURL();
 
-      
-      this.processService.process(this.inputParameters, canvasDataUrl).subscribe(result => {
-        console.error(result);
+      this.processService.process(this.inputParameters, canvasDataUrl).subscribe((result: Response) => {
+        if (result.status === 200) {
+          this.messageService.add({ severity: 'success', summary: 'Processing started', detail: '' });
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: '' });
+        }
       });
-    }  
+    }
   }
 
 }

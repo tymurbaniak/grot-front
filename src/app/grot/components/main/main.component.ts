@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import * as signalR from "@microsoft/signalr";
 import { AuthenticationService } from 'src/app/auth/services/authentication.service';
+import { ComService } from '../../services/com.service';
 
 @Component({
   selector: 'app-main',
@@ -13,7 +14,9 @@ export class MainComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private comService: ComService,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -25,12 +28,11 @@ export class MainComponent implements OnInit {
 
     
     connection.on('processingDoneReceived', (message: string) => {
+      this.changeDetector.detectChanges();
       this.messageService.add({ severity: 'success', summary: 'Processing done', detail: message });
+      console.info("Process finished");
+      this.comService.setReloadProjects();
     });
-    
-    if(connection.state !== signalR.HubConnectionState.Disconnected){
-
-    }
     
     connection.start().catch((error) => {
       console.error(`Can't establish connection to signalR hub: ${error}`);

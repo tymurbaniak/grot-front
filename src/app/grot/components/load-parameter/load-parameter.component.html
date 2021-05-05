@@ -1,14 +1,14 @@
 <ng-container [formGroup]="formModel">
-  <div class="p-formgroup-inline load">
-    <div class="p-field">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-5">
       <label for="loadX" class="p-sr-only">X</label>
       <p-inputNumber id="loadX" formControlName="loadX" mode="decimal" locale="en-US" [minFractionDigits]="2"></p-inputNumber>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-5">
       <label for="loadY" class="p-sr-only">Y</label>
       <p-inputNumber id="loadY" formControlName="loadY" mode="decimal" locale="en-US" [minFractionDigits]="2"></p-inputNumber>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-2">
       <p-colorPicker format="hex" formControlName="color" [inline]="false"></p-colorPicker>
     </div>
   </div>
