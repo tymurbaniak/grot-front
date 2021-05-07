@@ -29,7 +29,7 @@
                         <p-password id="password2" [toggleMask]="true" formControlName="password2">
                         </p-password>
                     </div>
-                    <div class="p-field" *ngIf="environment.production">
+                    <div class="p-field" *ngIf="environment.captcha">
                         <ng-hcaptcha (verify)="onVerify($event)" (expired)="onExpired($event)"
                             (error)="onError($event)">
                         </ng-hcaptcha>

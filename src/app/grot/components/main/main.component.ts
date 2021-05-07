@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (!environment.production) {
+    if (!environment.docker && !environment.production) {
       return;
     }
 
