@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~11.2.5",
     "@angular/router": "~11.2.5",
     "@microsoft/signalr": "^6.0.0-preview.3.21201.13",
+    "ng-hcaptcha": "^1.0.0-beta.3",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primeng": "^11.3.1",

@@ -2,8 +2,11 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/auth/services/authentication.service';
 import { ComService } from '../../services/com.service';
 import { ProjectsService } from '../../services/projects.service';
+import { combineLatest } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
+import { ProjectInfo, ProjectInfoExtended } from '../../models/project-info';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects-list',
@@ -22,27 +25,40 @@ export class ProjectsListComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.comService.projects$.subscribe(() => {
-      this.getProjects();
-    });
-  }
-
-  private getProjects(): void {
     const userName = this.authService.userValue.username;
-    this.projectsService.getProjectsList(userName).subscribe(projects => {
-      projects.forEach((project: any) => {
-        const updatedUrls: string[] = [];
-        project.outputImageUrls.forEach((image: string) => {
-          updatedUrls.push(`${environment.apiUrl}/${image}`);
-        });
-        project.outputImageUrls = updatedUrls;
-      });
-
-      this.projects = projects;
+    this.comService.reloadProjects$.pipe(
+      switchMap(() => {
+        return combineLatest([
+          this.projectsService.getProjectsList(userName),
+          this.comService.processedProjects$
+        ])
+      })
+    ).subscribe(([projects, currentlyProcessd]) => {
+      this.rewriteImageUrls(projects);
+      this.projects = this.addCurrentlyProcessing(projects, currentlyProcessd);
       this.changeDetector.detectChanges();
     });
   }
 
+  private addCurrentlyProcessing(projects: ProjectInfoExtended[], currentlyProcessd: ProjectInfoExtended[]): ProjectInfoExtended[] {
+    const readyProjects = projects.filter((project) => !project.processing);
+    readyProjects.push(...currentlyProcessd);
 
+    return readyProjects;
+  }
 
+  private rewriteImageUrls(projects: ProjectInfo[]) {
+    projects.forEach((project: ProjectInfo) => {
+      const updatedUrls: string[] = [];
+      if (project.outputImageUrls) {
+        project.outputImageUrls.forEach((imageUrl: string) => {
+          if (!imageUrl.includes(environment.apiUrl)) {
+            updatedUrls.push(`${environment.apiUrl}/${imageUrl}`);
+          }
+        });
+        project.outputImageUrls = updatedUrls;
+      }
+    });
+  }
 }
+

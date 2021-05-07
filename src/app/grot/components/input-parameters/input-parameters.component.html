@@ -10,7 +10,7 @@
         </ng-container>
         <ng-container *ngIf="parameter.type === 'multiSelect'">
             <p-multiSelect [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
-                placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)"></p-multiSelect>
+                placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)" [maxSelectedLabels]="3"></p-multiSelect>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'text'">
             <input type="text" pInputText [formControl]="getControl(i)" placeholder="Project name"/>

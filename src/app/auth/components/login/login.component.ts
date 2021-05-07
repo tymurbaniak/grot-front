@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { first } from 'rxjs/operators';
 import { Message } from 'primeng/api';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   public submitted = false;
   public loading = false;
   public errors: Message[] = [];
+  public environment = environment;
 
   private returnUrl = '/';
 
@@ -57,9 +59,22 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         error: error => {
-          this.errors.push({severity:'error', summary:'Error', detail:error.message});
+          this.errors.push({ severity: 'error', summary: 'Error', detail: error.message });
           this.loading = false;
         }
       });
+  }
+
+  onVerify(token: string) {
+    // The verification process was successful.
+    // You can verify the token on your server now.
+  }
+
+  onExpired(response: any) {
+    this.errors.push({ severity: 'error', summary: 'Error', detail: response});
+  }
+
+  onError(error: any) {
+    this.errors.push({ severity: 'error', summary: 'Error', detail: error});
   }
 }

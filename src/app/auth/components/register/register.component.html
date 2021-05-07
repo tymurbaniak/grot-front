@@ -29,11 +29,16 @@
                         <p-password id="password2" [toggleMask]="true" formControlName="password2">
                         </p-password>
                     </div>
+                    <div class="p-field" *ngIf="environment.production">
+                        <ng-hcaptcha (verify)="onVerify($event)" (expired)="onExpired($event)"
+                            (error)="onError($event)">
+                        </ng-hcaptcha>
+                    </div>
                 </div>
 
                 <ng-template pTemplate="footer">
                     <button pButton type="submit" label="Register" class="p-d-block p-mx-auto"></button>
-                    <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>                    
+                    <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>
                 </ng-template>
             </p-card>
         </form>

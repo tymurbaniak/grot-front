@@ -3,17 +3,31 @@
 </ng-container>
 <ng-container *ngIf="projects.length > 0">
   <ng-container *ngFor="let project of projects">
-    <p-panel [toggleable]="true">
-      <ng-template pTemplate="header">
-        {{ project.name }}
-      </ng-template>
-      <div class="p-grid">
-        <ng-container *ngFor="let imageUrl of project.outputImageUrls">
-          <div class="p-col-3">
-            <img [src]="imageUrl">
-          </div>
-        </ng-container>
-      </div>
-    </p-panel>
+    <ng-container *ngIf="!project.processing">
+      <p-panel [toggleable]="true" [collapsed]="true">
+        <ng-template pTemplate="header">
+          {{ project.name }}
+        </ng-template>
+        <div class="p-grid">
+          <ng-container *ngFor="let imageUrl of project.outputImageUrls">
+            <div class="p-col-3">
+              <a [href]="imageUrl">
+                <img [src]="imageUrl" />
+              </a>
+            </div>
+          </ng-container>
+        </div>
+      </p-panel>
+    </ng-container>
+    <ng-container *ngIf="project.processing">
+      <p-panel [toggleable]="false" [collapsed]="true">
+        <ng-template pTemplate="icons">
+          <span class="pi pi-spin pi-spinner"></span>
+        </ng-template>
+        <ng-template pTemplate="header">
+          Processing project...
+        </ng-template>
+      </p-panel>
+    </ng-container>
   </ng-container>
 </ng-container>

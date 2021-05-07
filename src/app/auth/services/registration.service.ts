@@ -25,8 +25,8 @@ export class RegistrationService {
     this.user = this.userSubject.asObservable();
    }
   
-  register(username: string, password: string, email: string) {
-    return this.http.post<any>(`${environment.apiUrl}/register/newuser`, { username, password, email }, { withCredentials: true })
+  register(username: string, password: string, email: string, captchaToken: string) {
+    return this.http.post<any>(`${environment.apiUrl}/register/newuser`, { username, password, email, captchaToken }, { withCredentials: true })
       .pipe(map((user: User) => {
         this.userSubject.next(user);
         return user;

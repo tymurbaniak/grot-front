@@ -14,11 +14,14 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { appInitializer } from './services/app-init';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthenticationService } from './services/authentication.service';
+import { NgHcaptchaModule } from 'ng-hcaptcha';
+
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { fakeAuthBackendProvider } from './interceptors/mock-backend';
 
 @NgModule({
   declarations: [
@@ -35,10 +38,13 @@ import { AuthenticationService } from './services/authentication.service';
     ButtonModule,
     DividerModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    NgHcaptchaModule.forRoot({
+      siteKey: '43e30bd3-e4c7-43e3-bdc6-e2171ce603e5'
+    })
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] }    
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
   ],
 })
 export class AuthModule { }

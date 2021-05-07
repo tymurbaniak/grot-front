@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { RegistrationService } from '../../services/registration.service';
 import { first } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -22,14 +23,16 @@ export class RegisterComponent implements OnInit {
   public submitted = false;
   public loading = false;
   public errors: Message[] = [];
-
+  public environment = environment;
+  
+  public allowSubmit = false;
+  public captchaToken = '';
   public returnUrl = '/';
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder,   
-    private registrationServce: RegistrationService 
+    private formBuilder: FormBuilder,
+    private registrationServce: RegistrationService
   ) { }
 
   ngOnInit(): void {
@@ -45,17 +48,30 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.registrationServce.register(this.f.username.value, this.f.password1.value, this.f.email.value)    
+    this.registrationServce.register(this.f.username.value, this.f.password1.value, this.f.email.value, this.captchaToken)
       .pipe(first())
       .subscribe({
         next: () => {
           this.router.navigate([this.returnUrl]);
         },
         error: error => {
-          this.errors.push({severity:'error', summary:'Error', detail:error.message});
+          this.errors.push({ severity: 'error', summary: 'Error', detail: error.message });
           this.loading = false;
           console.error(error);
         }
       });
+  }
+
+  public onVerify(token: string) {
+    this.allowSubmit = true;
+    this.captchaToken = token;
+  }
+
+  public onExpired(_response: any) {
+    this.allowSubmit = false;
+  }
+
+  public onError(_error: any) {
+    this.allowSubmit = false;
   }
 }

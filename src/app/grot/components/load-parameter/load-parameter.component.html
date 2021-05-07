@@ -1,15 +1,30 @@
 <ng-container [formGroup]="formModel">
   <div class="p-fluid p-formgrid p-grid">
-    <div class="p-field p-col-5">
+    <div class="p-field p-col-6">
       <label for="loadX" class="p-sr-only">X</label>
-      <p-inputNumber id="loadX" formControlName="loadX" mode="decimal" locale="en-US" [minFractionDigits]="2"></p-inputNumber>
+      <p-inputNumber id="loadX" formControlName="loadX" locale="en-US">
+      </p-inputNumber>
     </div>
-    <div class="p-field p-col-5">
+    <div class="p-field p-col-6">
       <label for="loadY" class="p-sr-only">Y</label>
-      <p-inputNumber id="loadY" formControlName="loadY" mode="decimal" locale="en-US" [minFractionDigits]="2"></p-inputNumber>
+      <p-inputNumber id="loadY" formControlName="loadY" locale="en-US">
+      </p-inputNumber>
     </div>
-    <div class="p-field p-col-2">
-      <p-colorPicker format="hex" formControlName="color" [inline]="false"></p-colorPicker>
-    </div>
+    <!-- <div class="p-fluid">
+      <div class="p-field">
+        <div class="p-field p-grid p-col-6">
+          <label for="firstname" class="p-col-2 p-mb-2 p-md-2 p-mb-md-0">X</label>
+          <div class="p-col-10 p-md-10">
+            <input id="firstname" type="text" pInputText>
+          </div>
+        </div>
+        <div class="p-field p-grid p-col-6">
+          <label for="lastname" class="p-col-2 p-mb-2 p-md-2 p-mb-md-0">Y</label>
+          <div class="p-col-10 p-md-10">
+            <input id="lastname" type="text" pInputText>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </ng-container>

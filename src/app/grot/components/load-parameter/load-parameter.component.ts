@@ -53,8 +53,8 @@ export class LoadParameterComponent implements ControlValueAccessor, OnInit {
     }
 
     this.value = values;
-    this.formModel.get('loadX')?.setValue(values[0]);
-    this.formModel.get('loadY')?.setValue(values[1]);
+    this.formModel.get('loadX')?.setValue(Number(values[0]));
+    this.formModel.get('loadY')?.setValue(Number(values[1]));
     this.formModel.get('color')?.setValue(values[2]);
   }
 

@@ -70,7 +70,12 @@ export class InputParametersComponent implements OnInit {
             break;
             case 'load': {
               if(formValue){
-                parameterValue.values.push(`x ${formValue[0]} y ${formValue[1]} magenta`)
+                if(typeof(formValue) === 'string'){
+                  const values = formValue.split(' ');
+                  parameterValue.values.push(`x ${values[0]} y ${values[1]} magenta`)
+                }else{
+                  parameterValue.values.push(`x ${formValue[0]} y ${formValue[1]} magenta`)
+                }                
               }
             }
           }

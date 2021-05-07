@@ -132,9 +132,10 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     if (this.canvas) {
       const canvasDataUrl = this.canvas.nativeElement.toDataURL();
 
-      this.processService.process(this.inputParameters, canvasDataUrl).subscribe((result: Response) => {
-        if (result.status === 200) {
+      this.processService.process(this.inputParameters, canvasDataUrl).subscribe((process) => {
+        if (process.started) {
           this.messageService.add({ severity: 'success', summary: 'Processing started', detail: '' });
+          this.comService.addProcessedProject(process.id);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: '' });
         }
