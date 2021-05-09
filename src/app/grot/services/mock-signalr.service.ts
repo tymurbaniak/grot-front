@@ -1,0 +1,32 @@
+import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Subject } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { ComService } from './com.service';
+import { ISignalRService } from './signalR-interface';
+
+@Injectable()
+export class MockSignalrService implements ISignalRService {
+
+  private endProcessSource = new Subject();
+
+  endProcess$ = this.endProcessSource.asObservable();
+
+  constructor(
+    private comService: ComService
+  ) { }
+
+  public connect(messageService: MessageService): void {
+    this.endProcess$
+      .pipe(delay(4000))
+      .subscribe(() => {
+      console.info("Process finished");
+      this.comService.removeProcessedProject();
+      this.comService.setReloadProjects();
+    })
+  }
+
+  public processFinish(): void {
+    this.endProcessSource.next(true);
+  }
+}

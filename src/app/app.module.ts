@@ -14,10 +14,14 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 import { fakeAuthBackendProvider } from './auth/interceptors/mock-backend';
 import { fakeGrotBackendProvider } from './grot/interceptors/mock-backend.interceptor';
 import { environment } from 'src/environments/environment';
+import { MockSignalrService } from './grot/services/mock-signalr.service';
+import { SignalrService } from './grot/services/signalr.service';
+import { AuthenticationService } from './auth/services/authentication.service';
+import { ComService } from './grot/services/com.service';
 
 const mockInterceptors = [
   fakeAuthBackendProvider,
-  fakeGrotBackendProvider
+  fakeGrotBackendProvider,
 ]
 
 @NgModule({
@@ -36,7 +40,24 @@ const mockInterceptors = [
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    ...!environment.docker ? mockInterceptors : []        
+    {
+      provide: SignalrService,
+      useFactory: (
+        authService: AuthenticationService,
+        comService: ComService
+      ) => {
+        if (!environment.production && !environment.docker) {
+          return new MockSignalrService(comService);
+        }
+
+        return new SignalrService(authService, comService);
+      },
+      deps: [
+        AuthenticationService,
+        ComService
+      ],
+    },
+    ...!environment.docker ? mockInterceptors : [],
   ],
   bootstrap: [AppComponent]
 })

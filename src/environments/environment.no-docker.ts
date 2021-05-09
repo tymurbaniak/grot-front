@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:44330',
+  apiUrl: '/assets',
   docker: false,
   captcha: false
 };

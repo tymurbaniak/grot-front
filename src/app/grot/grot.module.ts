@@ -27,7 +27,7 @@ import { ProjectsListComponent } from './components/projects-list/projects-list.
 @NgModule({
   declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent, ProjectsListComponent],
   imports: [
-    CommonModule,    
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     GrotRoutingModule,
@@ -42,6 +42,6 @@ import { ProjectsListComponent } from './components/projects-list/projects-list.
     ToastModule,
     AuthModule,
     PanelModule
-  ]  
+  ]
 })
 export class GrotModule { }

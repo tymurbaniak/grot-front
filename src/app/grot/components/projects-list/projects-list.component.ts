@@ -37,7 +37,6 @@ export class ProjectsListComponent implements OnInit {
       this.rewriteImageUrls(projects);
       this.projects = this.addCurrentlyProcessing(projects, currentlyProcessd);
       this.changeDetector.detectChanges();
-      this.changeDetector.reattach();
     });
   }
 
