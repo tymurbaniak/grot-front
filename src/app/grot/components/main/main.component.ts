@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 import { SignalrService } from '../../services/signalr.service';
@@ -13,7 +13,8 @@ export class MainComponent implements OnInit {
 
   constructor(
     private signalr: SignalrService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private ngZone: NgZone
   ) { }
 
   ngOnInit(): void {

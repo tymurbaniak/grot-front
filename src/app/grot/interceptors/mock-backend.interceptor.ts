@@ -1,5 +1,5 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { Observable, of } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { SignalrService } from "../services/signalr.service";
@@ -10,7 +10,9 @@ export class MockBackendInterceptor implements HttpInterceptor {
   private request: HttpRequest<any> | undefined = undefined;
   private next: HttpHandler | undefined = undefined;
 
-  constructor(private mockSignalR: SignalrService) {
+  constructor(
+    private mockSignalR: SignalrService,
+    private ngZone: NgZone) {
 
   }
 
@@ -92,7 +94,10 @@ export class MockBackendInterceptor implements HttpInterceptor {
   }
 
   private process = (): Observable<HttpEvent<any>> => {
-    this.mockSignalR.processFinish();
+    this.ngZone.runOutsideAngular(() => {
+      this.mockSignalR.processFinish();
+    });
+    
     return this.ok({ started: true });
   }
 

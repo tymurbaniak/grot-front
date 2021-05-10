@@ -20,8 +20,7 @@ export class ProjectsListComponent implements OnInit {
   constructor(
     private projectsService: ProjectsService,
     private authService: AuthenticationService,
-    private comService: ComService,
-    private changeDetector: ChangeDetectorRef
+    private comService: ComService
   ) { }
 
   public ngOnInit(): void {
@@ -36,7 +35,6 @@ export class ProjectsListComponent implements OnInit {
     ).subscribe(([projects, currentlyProcessd]) => {
       this.rewriteImageUrls(projects);
       this.projects = this.addCurrentlyProcessing(projects, currentlyProcessd);
-      this.changeDetector.detectChanges();
     });
   }
 

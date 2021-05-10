@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
 import { MessageService } from 'primeng/api';
-import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/auth/services/authentication.service';
 import { ComService } from './com.service';
 import { ISignalRService } from './signalR-interface';
 
 @Injectable()
-export class SignalrService implements ISignalRService {  
+export class SignalrService implements ISignalRService {
 
-  constructor(    
+  constructor(
     private authService: AuthenticationService,
-    private comService: ComService
+    private comService: ComService,
+    private ngZone: NgZone    
   ) { }
 
   processFinish(): void {
-    
+
   }
 
   public connect(messageService: MessageService): void {
@@ -26,10 +26,15 @@ export class SignalrService implements ISignalRService {
       .build();
 
     connection.on('processingDoneReceived', (message: string) => {
-      messageService.add({ severity: 'success', summary: 'Processing done', detail: message });
-      console.info("Process finished");
-      this.comService.removeProcessedProject();
-      this.comService.setReloadProjects();
+      console.log('processingDoneReceived called');
+      console.log(`Is in angular zone: ${NgZone.isInAngularZone()}`);
+      this.ngZone.run(() => {
+        console.log(`Is in angular zone: ${NgZone.isInAngularZone()}`);
+        console.info("Process finished");
+        messageService.add({ severity: 'success', summary: 'Processing done', detail: message });
+        this.comService.removeProcessedProject();
+        this.comService.setReloadProjects();
+      });      
     });
 
     connection.start().catch((error) => {

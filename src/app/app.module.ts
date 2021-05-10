@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NgZone } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -44,17 +44,19 @@ const mockInterceptors = [
       provide: SignalrService,
       useFactory: (
         authService: AuthenticationService,
-        comService: ComService
+        comService: ComService,
+        ngZone: NgZone
       ) => {
         if (!environment.production && !environment.docker) {
           return new MockSignalrService(comService);
         }
 
-        return new SignalrService(authService, comService);
+        return new SignalrService(authService, comService, ngZone);
       },
       deps: [
         AuthenticationService,
-        ComService
+        ComService,
+        NgZone
       ],
     },
     ...!environment.docker ? mockInterceptors : [],

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class MockSignalrService implements ISignalRService {
     private comService: ComService
   ) { }
 
-  public connect(messageService: MessageService): void {
+  public connect(messageService: MessageService, ngZone: NgZone): void {
     this.endProcess$
       .pipe(delay(4000))
       .subscribe(() => {
