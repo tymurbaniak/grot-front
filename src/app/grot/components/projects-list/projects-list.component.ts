@@ -4,9 +4,8 @@ import { ComService } from '../../services/com.service';
 import { ProjectsService } from '../../services/projects.service';
 import { combineLatest } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
-import { ProjectInfo, ProjectInfoExtended } from '../../models/project-info';
 import { switchMap } from 'rxjs/operators';
+import { ProjectListItem } from '../../models/project-list-item';
 
 @Component({
   selector: 'app-projects-list',
@@ -15,7 +14,8 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ProjectsListComponent implements OnInit {
 
-  public projects: any[] = [];
+  public projects: ProjectListItem[] = [];
+  public userName: string = '';
 
   constructor(
     private projectsService: ProjectsService,
@@ -24,39 +24,24 @@ export class ProjectsListComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    const userName = this.authService.userValue.username;
+    this.userName = this.authService.userValue.username;
     this.comService.reloadProjects$.pipe(
       switchMap(() => {
         return combineLatest([
-          this.projectsService.getProjectsList(userName),
+          this.projectsService.getProjectsList(this.userName),
           this.comService.processedProjects$
         ])
       })
     ).subscribe(([projects, currentlyProcessd]) => {
-      this.rewriteImageUrls(projects);
       this.projects = this.addCurrentlyProcessing(projects, currentlyProcessd);
     });
   }
 
-  private addCurrentlyProcessing(projects: ProjectInfoExtended[], currentlyProcessd: ProjectInfoExtended[]): ProjectInfoExtended[] {
+  private addCurrentlyProcessing(projects: ProjectListItem[], currentlyProcessd: ProjectListItem[]): ProjectListItem[] {
     const readyProjects = projects.filter((project) => !project.processing);
     readyProjects.push(...currentlyProcessd);
 
     return readyProjects;
-  }
-
-  private rewriteImageUrls(projects: ProjectInfo[]) {
-    projects.forEach((project: ProjectInfo) => {
-      const updatedUrls: string[] = [];
-      if (project.outputImageUrls) {
-        project.outputImageUrls.forEach((imageUrl: string) => {
-          if (!imageUrl.includes(environment.apiUrl)) {
-            updatedUrls.push(`${environment.apiUrl}/${imageUrl}`);
-          }
-        });
-        project.outputImageUrls = updatedUrls;
-      }
-    });
-  }
+  }  
 }
 

@@ -1,0 +1,39 @@
+<ng-container *ngIf="!processing">
+  <p-panel [toggleable]="true" [collapsed]="true" toggler="header" (onAfterToggle)="loadProject()">
+    <ng-template pTemplate="header">
+      {{ projectName }}
+    </ng-template>
+    <ng-container *ngIf="!isProjectLoaded">
+      <div class="p-p-4">
+        <div class="p-grid">          
+          <div class="p-col-2 p-offset-5">
+            <div class="p-mx-auto">
+              <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isProjectLoaded">
+      <div class="p-grid">
+        <ng-container *ngFor="let imageUrl of project.outputImageUrls">
+          <div class="p-col-3">
+            <a [href]="imageUrl">
+              <img [src]="imageUrl" />
+            </a>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </p-panel>
+</ng-container>
+<ng-container *ngIf="processing">
+  <p-panel [toggleable]="false" [collapsed]="true">
+    <ng-template pTemplate="icons">
+      <span class="pi pi-spin pi-spinner"></span>
+    </ng-template>
+    <ng-template pTemplate="header">
+      Processing project...
+    </ng-template>
+  </p-panel>
+</ng-container>

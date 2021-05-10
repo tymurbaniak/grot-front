@@ -18,7 +18,7 @@ export class MockSignalrService implements ISignalRService {
 
   public connect(messageService: MessageService, ngZone: NgZone): void {
     this.endProcess$
-      .pipe(delay(4000))
+      .pipe(delay(10000))
       .subscribe(() => {
       console.info("Process finished");
       this.comService.removeProcessedProject();

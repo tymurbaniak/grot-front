@@ -22,10 +22,11 @@ import { TestComponent } from './components/test/test.component';
 import { LoadParameterComponent } from './components/load-parameter/load-parameter.component';
 import { AuthModule } from '../auth/auth.module';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
+import { ProjectContentComponent } from './components/project-content/project-content.component';
 
 
 @NgModule({
-  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent, ProjectsListComponent],
+  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent, ProjectsListComponent, ProjectContentComponent],
   imports: [
     CommonModule,
     FormsModule,

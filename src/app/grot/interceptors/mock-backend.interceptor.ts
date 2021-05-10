@@ -42,7 +42,9 @@ export class MockBackendInterceptor implements HttpInterceptor {
         return this.parameters();
       case url.endsWith('/grot/process') && method === 'POST':
         return this.process();
-      case url.endsWith('/grot/projectslist') && method === 'POST':
+      case url.endsWith('/grot/project') && method === 'POST':
+        return this.project(request.body.projectName);
+      case url.endsWith('/grot/projects') && method === 'POST':
         return this.projectslist();
       default:
         // pass through any requests not handled above
@@ -97,31 +99,38 @@ export class MockBackendInterceptor implements HttpInterceptor {
     this.ngZone.runOutsideAngular(() => {
       this.mockSignalR.processFinish();
     });
-    
+
     return this.ok({ started: true });
+  }
+
+  private project = (projectName: string): Observable<HttpEvent<any>> => {
+    return this.ok(
+      {
+        name: projectName,
+        outputImageUrls: [
+          '/logo.png',
+          '/logo.png',
+          '/logo.png'
+        ],
+        inputImageUrl: '',
+        parameters: []
+      }
+    );
   }
 
   private projectslist = (): Observable<HttpEvent<any>> => {
     return this.ok([
       {
         name: 'project1',
-        outputImageUrls: [
-          '/logo.png',          
-          '/logo.png',
-          '/logo.png'
-        ],
-        inputImageUrl: '',
-        parameters: []
+        processing: false
       },
       {
         name: 'project2',
-        outputImageUrls: [
-          '/logo.png',          
-          '/logo.png',
-          '/logo.png'
-        ],
-        inputImageUrl: '',
-        parameters: []
+        processing: false
+      },
+      {
+        name: 'project3',
+        processing: false
       }
     ]);
   }

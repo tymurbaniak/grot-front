@@ -8,5 +8,5 @@ export class ProjectInfo {
 }
 
 export class ProjectInfoExtended extends ProjectInfo {
-  public processing: boolean = false;
+  public processing?: boolean = false;
 }
