@@ -64,17 +64,4 @@ export class LoginComponent implements OnInit {
         }
       });
   }
-
-  onVerify(token: string) {
-    // The verification process was successful.
-    // You can verify the token on your server now.
-  }
-
-  onExpired(response: any) {
-    this.errors.push({ severity: 'error', summary: 'Error', detail: response});
-  }
-
-  onError(error: any) {
-    this.errors.push({ severity: 'error', summary: 'Error', detail: error});
-  }
 }

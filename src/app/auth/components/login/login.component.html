@@ -23,11 +23,7 @@
                 </div>
 
                 <ng-template pTemplate="footer">
-                    <button pButton type="submit" label="Login" class="p-d-block p-mx-auto"
-                        *ngIf="!environment.captcha"></button>
-                    <button pButton type="submit" label="Login" class="p-d-block p-mx-auto"
-                        *ngIf="environment.captcha" ngHcaptchaInvisibleButton (verify)="onVerify($event)"
-                        (expired)="onExpired($event)" (error)="onError($event)"></button>
+                    <button pButton type="submit" label="Login" class="p-d-block p-mx-auto"></button>
                     <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>
                 </ng-template>
             </p-card>

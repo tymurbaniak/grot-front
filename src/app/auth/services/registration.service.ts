@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
+import { Registration } from '../models/registration';
 import { User } from '../models/user';
 
 @Injectable({
@@ -25,8 +26,8 @@ export class RegistrationService {
     this.user = this.userSubject.asObservable();
    }
   
-  register(username: string, password: string, email: string, captchaToken: string) {
-    return this.http.post<any>(`${environment.apiUrl}/register/newuser`, { username, password, email, captchaToken }, { withCredentials: true })
+  register(registrationData: Registration) {
+    return this.http.post<any>(`${environment.apiUrl}/register/newuser`, registrationData, { withCredentials: false })
       .pipe(map((user: User) => {
         this.userSubject.next(user);
         return user;

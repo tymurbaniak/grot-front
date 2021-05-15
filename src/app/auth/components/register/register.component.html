@@ -1,6 +1,6 @@
 <div class="p-grid p-jc-center p-mt-4">
     <div class="p-col-4">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <p-card>
                 <ng-template pTemplate="header">
                     <div class="p-grid p-jc-center">
@@ -37,7 +37,7 @@
                 </div>
 
                 <ng-template pTemplate="footer">
-                    <button pButton type="submit" label="Register" class="p-d-block p-mx-auto"></button>
+                    <button pButton type="submit" label="Register" class="p-d-block p-mx-auto" [disabled]="!allowSubmit"></button>
                     <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>
                 </ng-template>
             </p-card>

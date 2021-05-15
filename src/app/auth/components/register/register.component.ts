@@ -5,6 +5,7 @@ import { Message } from 'primeng/api';
 import { RegistrationService } from '../../services/registration.service';
 import { first } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { Registration } from '../../models/registration';
 
 @Component({
   selector: 'app-register',
@@ -13,18 +14,17 @@ import { environment } from '../../../../environments/environment';
 })
 export class RegisterComponent implements OnInit {
 
-  public loginForm = this.formBuilder.group({
+  public registerForm = this.formBuilder.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
     password1: ['', Validators.required],
     password2: ['', Validators.required]
   });
 
-  public submitted = false;
   public loading = false;
   public errors: Message[] = [];
   public environment = environment;
-  
+
   public allowSubmit = false;
   public captchaToken = '';
   public returnUrl = '/';
@@ -38,24 +38,31 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get f() { return this.loginForm.controls; }
+  get f() { return this.registerForm.controls; }
 
   public onSubmit(): void {
-    this.submitted = true;
+    this.errors = [];
 
-    if (this.loginForm.invalid) {
+    if (this.registerForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.registrationServce.register(this.f.username.value, this.f.password1.value, this.f.email.value, this.captchaToken)
+    const registraiontData: Registration = {
+      username: this.f.username.value,
+      password: this.f.password1.value,
+      email: this.f.email.value,
+      captchaToken: this.captchaToken
+    };
+
+    this.registrationServce.register(registraiontData)
       .pipe(first())
       .subscribe({
         next: () => {
           this.router.navigate([this.returnUrl]);
         },
         error: error => {
-          this.errors.push({ severity: 'error', summary: 'Error', detail: error.message });
+          this.errors.push({ severity: 'error', summary: 'Error', detail: error });
           this.loading = false;
           console.error(error);
         }

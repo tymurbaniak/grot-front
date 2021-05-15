@@ -18,11 +18,6 @@ import { appInitializer } from './services/app-init';
 import { AuthenticationService } from './services/authentication.service';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 
-import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { fakeAuthBackendProvider } from './interceptors/mock-backend';
-
 @NgModule({
   declarations: [
     LoginComponent,

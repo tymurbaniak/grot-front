@@ -6,7 +6,8 @@ export const environment = {
   production: true,
   apiUrl: '/api',
   docker: true,
-  captcha: false
+  captcha: true,
+  mockBackend: false
 };
 
 /*

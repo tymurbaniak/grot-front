@@ -18,10 +18,12 @@ import { MockSignalrService } from './grot/services/mock-signalr.service';
 import { SignalrService } from './grot/services/signalr.service';
 import { AuthenticationService } from './auth/services/authentication.service';
 import { ComService } from './grot/services/com.service';
+import { fakeRegistrationBackendProvider } from './auth/interceptors/mock-registration';
 
 const mockInterceptors = [
   fakeAuthBackendProvider,
   fakeGrotBackendProvider,
+  fakeRegistrationBackendProvider
 ]
 
 @NgModule({
@@ -59,7 +61,7 @@ const mockInterceptors = [
         NgZone
       ],
     },
-    ...!environment.docker ? mockInterceptors : [],
+    ...!environment.docker && environment.mockBackend ? mockInterceptors : [],
   ],
   bootstrap: [AppComponent]
 })
