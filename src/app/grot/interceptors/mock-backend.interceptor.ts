@@ -3,6 +3,7 @@ import { Injectable, NgZone } from "@angular/core";
 import { Observable, of } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { SignalrService } from "../services/signalr.service";
+import { Parameters } from "./parameters";
 
 @Injectable()
 export class MockBackendInterceptor implements HttpInterceptor {
@@ -53,46 +54,7 @@ export class MockBackendInterceptor implements HttpInterceptor {
   }
 
   private parameters = (): Observable<HttpEvent<any>> => {
-    return this.ok([
-      {
-        "name": "scale",
-        "displayName": "Scale",
-        "type": "number",
-        "default": "1"
-      },
-      {
-        "name": "thickness",
-        "displayName": "Thickness",
-        "type": "number",
-        "default": "1"
-      },
-      {
-        "name": "load",
-        "displayName": "Force direction (X/Y)",
-        "type": "load",
-        "default": "0 -800 f0f"
-      },
-      {
-        "name": "disp",
-        "displayName": "Displacements",
-        "type": "multiSelect",
-        "default": "",
-        "options": [
-          {
-            "name": "X",
-            "value": "x"
-          },
-          {
-            "name": "Y",
-            "value": "y"
-          },
-          {
-            "name": "Mag",
-            "value": "mag"
-          }
-        ]
-      },
-    ]);
+    return this.ok(Parameters);
   }
 
   private process = (): Observable<HttpEvent<any>> => {

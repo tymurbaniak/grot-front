@@ -12,13 +12,20 @@
 
                 <div class="p-fluid">
                     <div class="p-field">
-                        <label for="username">Name</label>
-                        <input id="username" type="text" pInputText formControlName="username" />
+                        <label for="username">Username</label>
+                        <input id="username" type="text" pInputText formControlName="username"
+                            [ngClass]="{ 'invalid-field': loginForm.controls.username.invalid && submited }" />
+                        <small *ngIf="loginForm.controls.username.invalid && submited" id="username-help"
+                            class="invalid-help-text">Username
+                            is required</small>
                     </div>
                     <div class="p-field">
                         <label for="password">Password</label>
-                        <p-password id="password" [feedback]="false" [toggleMask]="true" formControlName="password">
+                        <p-password id="password" [feedback]="false" [toggleMask]="true" formControlName="password" #password>
                         </p-password>
+                        <small *ngIf="loginForm.controls.password.invalid && submited" id="password-help"
+                            class="invalid-help-text">Password
+                            is required</small>
                     </div>
                 </div>
 

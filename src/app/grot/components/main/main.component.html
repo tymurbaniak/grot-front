@@ -10,3 +10,10 @@
     </div>
 </div>
 <p-toast position="top-right"></p-toast>
+<p-dialog header="Validation errors" [(visible)]="showModal">
+    <ul>
+        <li *ngFor="let message of modalContent">
+            {{ message }} 
+        </li>
+    </ul>
+</p-dialog>

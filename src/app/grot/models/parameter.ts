@@ -6,4 +6,5 @@ export class InputParameterDefinition {
     public type = '';
     public default = '';
     public options: Option[] = [];
+    public required?: boolean;
 }

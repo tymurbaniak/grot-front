@@ -23,10 +23,19 @@ import { LoadParameterComponent } from './components/load-parameter/load-paramet
 import { AuthModule } from '../auth/auth.module';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectContentComponent } from './components/project-content/project-content.component';
+import {DialogModule} from 'primeng/dialog';
 
 
 @NgModule({
-  declarations: [MainComponent, ImageEditorComponent, InputParametersComponent, TestComponent, LoadParameterComponent, ProjectsListComponent, ProjectContentComponent],
+  declarations: [
+    MainComponent, 
+    ImageEditorComponent, 
+    InputParametersComponent, 
+    TestComponent, 
+    LoadParameterComponent, 
+    ProjectsListComponent, 
+    ProjectContentComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -42,7 +51,8 @@ import { ProjectContentComponent } from './components/project-content/project-co
     ColorPickerModule,
     ToastModule,
     AuthModule,
-    PanelModule
+    PanelModule,
+    DialogModule
   ]
 })
 export class GrotModule { }

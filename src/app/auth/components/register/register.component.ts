@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   public loading = false;
   public errors: Message[] = [];
   public environment = environment;
+  public submited = false;
 
   public allowSubmit = false;
   public captchaToken = '';
@@ -36,12 +37,14 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.allowSubmit = !environment.captcha;
   }
 
   get f() { return this.registerForm.controls; }
 
   public onSubmit(): void {
     this.errors = [];
+    this.submited = true;
 
     if (this.registerForm.invalid) {
       return;

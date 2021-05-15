@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InputParameterDefinition } from '../../models/parameter';
 import { ParameterValue } from '../../models/parameter-value';
 import { ComService } from '../../services/com.service';
@@ -28,7 +28,7 @@ export class InputParametersComponent implements OnInit {
       this.parameters = result;
 
       this.parameters.forEach(parameter => {
-        const formControl = this.fb.control(parameter.default);
+        const formControl = this.fb.control(parameter.default, parameter.required ? Validators.required : null);
         this.formModel.push(formControl);
       });
     });
@@ -84,6 +84,7 @@ export class InputParametersComponent implements OnInit {
         });
 
         this.comService.setParameters(parameterValues);
+        this.comService.setAreParametersValid(!this.formModel.invalid);
       }
     });
   }

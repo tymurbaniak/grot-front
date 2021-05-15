@@ -3,20 +3,28 @@
         <label for="state">{{ parameter.displayName }}</label>
         <ng-container *ngIf="parameter.type === 'select'">
             <p-dropdown [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
-                placeholder="Select..." optionLabel="name" [formControl]="getControl(i)"></p-dropdown>
+                placeholder="Select..." optionLabel="name" [formControl]="getControl(i)"
+                [ngClass]="{ 'invalid-field': getControl(i).invalid }"></p-dropdown>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'number'">
-            <p-inputNumber mode="decimal" [showButtons]="true" [formControl]="getControl(i)" [minFractionDigits]="2"></p-inputNumber>
+            <p-inputNumber mode="decimal" [showButtons]="true" [formControl]="getControl(i)" [minFractionDigits]="2"
+                [ngClass]="{ 'invalid-field': getControl(i).invalid }">
+            </p-inputNumber>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'multiSelect'">
             <p-multiSelect [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
-                placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)" [maxSelectedLabels]="3"></p-multiSelect>
+                placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)" [maxSelectedLabels]="3"
+                [ngClass]="{ 'invalid-field': getControl(i).invalid }">
+            </p-multiSelect>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'text'">
-            <input type="text" pInputText [formControl]="getControl(i)" placeholder="Project name"/>
+            <input type="text" pInputText [formControl]="getControl(i)" placeholder="Project name"
+                [ngClass]="{ 'invalid-field': getControl(i).invalid }" />
         </ng-container>
         <ng-container *ngIf="parameter.type === 'load'">
-            <app-load-parameter [formControl]="getControl(i)"></app-load-parameter>
+            <app-load-parameter [formControl]="getControl(i)" [ngClass]="{ 'invalid-field': getControl(i).invalid }">
+            </app-load-parameter>
         </ng-container>
+        <small *ngIf="getControl(i).invalid" id="password-help" class="invalid-help-text">Required</small>
     </div>
 </div>

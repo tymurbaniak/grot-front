@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:44330',
+  apiUrl: '/api',
   docker: false,
-  captcha: true,
-  mockBackend: false
+  captcha: false,
+  mockBackend: true
 };
 
 console.info(environment.apiUrl);

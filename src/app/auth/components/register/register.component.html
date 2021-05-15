@@ -13,21 +13,33 @@
                 <div class="p-fluid">
                     <div class="p-field">
                         <label for="username">Name</label>
-                        <input id="username" type="text" pInputText formControlName="username" />
+                        <input id="username" type="text" pInputText formControlName="username"
+                            [ngClass]="{ 'invalid-field': registerForm.controls.username.invalid && submited }" />
+                        <small *ngIf="registerForm.controls.username.invalid && submited" id="username-help"
+                            class="invalid-help-text">Username
+                            is required</small>
                     </div>
                     <div class="p-field">
                         <label for="email">Email</label>
-                        <input id="email" type="text" pInputText formControlName="email" />
+                        <input id="email" type="text" pInputText formControlName="email"
+                            [ngClass]="{ 'invalid-field': registerForm.controls.username.invalid && submited }" />
+                        <small *ngIf="registerForm.controls.email.invalid && submited" id="email-help"
+                            class="invalid-help-text">Email
+                            is required</small>
                     </div>
                     <div class="p-field">
                         <label for="password1">Password</label>
                         <p-password id="password1" [toggleMask]="true" formControlName="password1">
                         </p-password>
+                        <small *ngIf="registerForm.controls.password1.invalid && submited" id="email-help"
+                            class="invalid-help-text">You need to create password</small>
                     </div>
                     <div class="p-field">
                         <label for="password2">Repeat Password</label>
                         <p-password id="password2" [toggleMask]="true" formControlName="password2">
                         </p-password>
+                        <small *ngIf="registerForm.controls.password2.invalid && submited" id="email-help"
+                            class="invalid-help-text">You need to repeat password</small>
                     </div>
                     <div class="p-field" *ngIf="environment.captcha">
                         <ng-hcaptcha (verify)="onVerify($event)" (expired)="onExpired($event)"
@@ -37,7 +49,8 @@
                 </div>
 
                 <ng-template pTemplate="footer">
-                    <button pButton type="submit" label="Register" class="p-d-block p-mx-auto" [disabled]="!allowSubmit"></button>
+                    <button pButton type="submit" label="Register" class="p-d-block p-mx-auto"
+                        [disabled]="!allowSubmit"></button>
                     <p-messages *ngIf="errors.length > 0" [(value)]="errors" [enableService]="false"></p-messages>
                 </ng-template>
             </p-card>

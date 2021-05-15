@@ -5,6 +5,7 @@ import { ComService } from '../../services/com.service';
 import { ProcessService } from '../../services/process.service';
 import * as signalR from "@microsoft/signalr";
 import { MessageService } from 'primeng/api';
+import { ProcessValidator } from '../../services/process-validator';
 
 @Component({
   selector: 'app-image-editor',
@@ -129,6 +130,16 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   public onProcessClicked($event: any): void {
+    const validator = new ProcessValidator();
+    validator.isImageOk(this.canvas !== undefined);
+    validator.isImageBlank(this.isCanvasBlank());
+    validator.isFormValid(this.comService.areParametersValid());
+
+    if(!validator.isDataValid){
+      this.comService.setProcessDataInvalid(validator);
+      return;
+    }
+
     if (this.canvas) {
       const canvasDataUrl = this.canvas.nativeElement.toDataURL();
 
@@ -142,6 +153,19 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
         }
       });
     }
+  }
+
+  private isCanvasBlank(): boolean {
+    if(this.canvas){
+      const ctx = this.canvas.nativeElement.getContext("2d");
+      if(ctx){
+        return !ctx
+        .getImageData(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height).data
+        .some(channel => channel !== 0);
+      }      
+    }
+    
+    return true;
   }
 
 }

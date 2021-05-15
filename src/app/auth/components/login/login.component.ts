@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { first } from 'rxjs/operators';
 import { Message } from 'primeng/api';
 import { environment } from '../../../../environments/environment';
+import { Password } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,14 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  public submitted = false;
   public loading = false;
   public errors: Message[] = [];
   public environment = environment;
+  public submited = false;
 
   private returnUrl = '/';
+
+  @ViewChild('password', { static: false }) private passwordField!: Password;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,9 +47,8 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   public onSubmit(): void {
-    this.submitted = true;
-
-    // stop here if form is invalid
+    this.errors = [];
+    this.submited = true;
     if (this.loginForm.invalid) {
       return;
     }
