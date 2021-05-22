@@ -19,6 +19,7 @@ import { SignalrService } from './grot/services/signalr.service';
 import { AuthenticationService } from './auth/services/authentication.service';
 import { ComService } from './grot/services/com.service';
 import { fakeRegistrationBackendProvider } from './auth/interceptors/mock-registration';
+import { MenubarModule } from 'primeng/menubar';
 
 const mockInterceptors = [
   fakeAuthBackendProvider,
@@ -37,7 +38,8 @@ const mockInterceptors = [
     HttpClientModule,
     AppRoutingModule,
     ToolbarModule,
-    ButtonModule
+    ButtonModule,
+    MenubarModule    
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
