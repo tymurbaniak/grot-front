@@ -3,7 +3,6 @@ import { FileUpload } from 'primeng/fileupload';
 import { ParameterValue } from '../../models/parameter-value';
 import { ComService } from '../../services/com.service';
 import { ProcessService } from '../../services/process.service';
-import * as signalR from "@microsoft/signalr";
 import { MessageService } from 'primeng/api';
 import { ProcessValidator } from '../../services/process-validator';
 
@@ -55,7 +54,6 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     if (this.canvas) {
       this.context = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
     }
-
     this.onResize();
   }
 
@@ -66,7 +64,8 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public startDrawing($event: MouseEvent): void {
+  public startDrawing($event: MouseEvent | TouchEvent): void {
+    $event.preventDefault();
     const position = this.getMousePosition($event);
     this.penDown = true;
 
@@ -75,7 +74,8 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     this.context.stroke();
   }
 
-  public drawing($event: MouseEvent): void {
+  public drawing($event: MouseEvent | TouchEvent): void {
+    $event.preventDefault();
     if (this.penDown) {
       const position = this.getMousePosition($event);
 
@@ -84,20 +84,31 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public stopDrawing($event: MouseEvent): void {
+  public stopDrawing($event: MouseEvent | TouchEvent): void {
+    $event.preventDefault();
     const position = this.getMousePosition($event);
     this.penDown = false;
     this.context.lineTo(position.x, position.y);
     this.context.stroke();
   }
 
-  private getMousePosition($event: MouseEvent): { x: number, y: number } {
+  private getMousePosition($event: MouseEvent | TouchEvent): { x: number, y: number } {
     let cords = { x: 0, y: 0 };
 
-    if (this.canvas) {
-      const rect = this.canvas.nativeElement.getBoundingClientRect();
-      cords.x = $event.clientX - rect.left;
-      cords.y = $event.clientY - rect.top;
+    if($event instanceof(MouseEvent)){
+      if (this.canvas) {
+        const rect = this.canvas.nativeElement.getBoundingClientRect();
+        cords.x = $event.clientX - rect.left;
+        cords.y = $event.clientY - rect.top;
+      }
+    }  
+    
+    if($event instanceof(TouchEvent)){
+      if(this.canvas) {
+        const rect = this.canvas.nativeElement.getBoundingClientRect();
+        cords.x = $event.touches[0].clientX - rect.left;
+        cords.y = $event.touches[0].clientY - rect.top;
+      }
     }
 
     return cords;

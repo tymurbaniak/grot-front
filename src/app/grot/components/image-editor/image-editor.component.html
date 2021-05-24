@@ -18,6 +18,10 @@
     (mousedown)="startDrawing($event)"
     (mousemove)="drawing($event)"
     (mouseup)="stopDrawing($event)"
+    (touchstart)="startDrawing($event)"
+    (touchmove)="drawing($event)"
+    (touchend)="stopDrawing($event)"
+    (window:resize)="onResize()"
     ></canvas>
 </div>
 <p-toolbar>
