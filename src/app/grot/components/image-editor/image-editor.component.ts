@@ -51,10 +51,13 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   public ngAfterViewInit(): void {
+    this.onResize();
+
     if (this.canvas) {
       this.context = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
-    }
-    this.onResize();
+      this.context.fillStyle = "white";
+      this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    }    
   }
 
   public onResize(): void {
@@ -103,7 +106,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       }
     }  
     
-    if($event instanceof(TouchEvent)){
+    if(window.TouchEvent && $event instanceof(TouchEvent)){
       if(this.canvas) {
         const rect = this.canvas.nativeElement.getBoundingClientRect();
         cords.x = $event.touches[0].clientX - rect.left;
