@@ -22,6 +22,7 @@
     (touchmove)="drawing($event)"
     (touchend)="stopDrawing($event)"
     (window:resize)="onResize()"
+    (window:orientationchange)="onResize()"
     ></canvas>
 </div>
 <p-toolbar>

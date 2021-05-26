@@ -57,13 +57,29 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       this.context = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
       this.context.fillStyle = "white";
       this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-    }    
+    }
   }
 
   public onResize(): void {
     if (this.canvas) {
+      const tmpCanvas = document.createElement("canvas");
+      tmpCanvas.height = this.canvas.nativeElement.height;
+      tmpCanvas.width = this.canvas.nativeElement.width;
+      const tmpCtx = tmpCanvas.getContext("2d");
+
+      if (tmpCtx) {
+        tmpCtx.drawImage(this.canvas.nativeElement, 0, 0);
+      }
+
       this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
       this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
+      const context = this.canvas.nativeElement.getContext("2d");
+
+      if (context) {
+        context.drawImage(tmpCanvas, 0, 0, tmpCanvas.width, tmpCanvas.height, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        context.strokeStyle = this.selectedColor;
+        context.lineWidth = Number.parseInt(this.selectedColor);
+      }
     }
   }
 
@@ -72,9 +88,11 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     const position = this.getMousePosition($event);
     this.penDown = true;
 
-    this.context.beginPath();
-    this.context.moveTo(position.x, position.y);
-    this.context.stroke();
+    if (position) {
+      this.context.beginPath();
+      this.context.moveTo(position.x, position.y);
+      this.context.stroke();
+    }
   }
 
   public drawing($event: MouseEvent | TouchEvent): void {
@@ -82,8 +100,10 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     if (this.penDown) {
       const position = this.getMousePosition($event);
 
-      this.context.lineTo(position.x, position.y);
-      this.context.stroke();
+      if (position) {
+        this.context.lineTo(position.x, position.y);
+        this.context.stroke();
+      }
     }
   }
 
@@ -91,26 +111,31 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     $event.preventDefault();
     const position = this.getMousePosition($event);
     this.penDown = false;
-    this.context.lineTo(position.x, position.y);
-    this.context.stroke();
+
+    if (position) {
+      this.context.lineTo(position.x, position.y);
+      this.context.stroke();
+    }
   }
 
-  private getMousePosition($event: MouseEvent | TouchEvent): { x: number, y: number } {
+  private getMousePosition($event: MouseEvent | TouchEvent): { x: number, y: number } | undefined {
     let cords = { x: 0, y: 0 };
 
-    if($event instanceof(MouseEvent)){
+    if ($event instanceof (MouseEvent)) {
       if (this.canvas) {
         const rect = this.canvas.nativeElement.getBoundingClientRect();
         cords.x = $event.clientX - rect.left;
         cords.y = $event.clientY - rect.top;
       }
-    }  
-    
-    if(window.TouchEvent && $event instanceof(TouchEvent)){
-      if(this.canvas) {
+    }
+
+    if (window.TouchEvent && $event instanceof (TouchEvent)) {
+      if (this.canvas && $event.touches[0]) {
         const rect = this.canvas.nativeElement.getBoundingClientRect();
         cords.x = $event.touches[0].clientX - rect.left;
         cords.y = $event.touches[0].clientY - rect.top;
+      } else {
+        return undefined;
       }
     }
 
@@ -123,6 +148,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   public sizeChanged($size: any): void {
+    this.selectedSize = $size.value.value;
     this.context.lineWidth = $size.value.value;
   }
 
@@ -149,7 +175,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     validator.isImageBlank(this.isCanvasBlank());
     validator.isFormValid(this.comService.areParametersValid());
 
-    if(!validator.isDataValid){
+    if (!validator.isDataValid) {
       this.comService.setProcessDataInvalid(validator);
       return;
     }
@@ -170,15 +196,15 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   private isCanvasBlank(): boolean {
-    if(this.canvas){
+    if (this.canvas) {
       const ctx = this.canvas.nativeElement.getContext("2d");
-      if(ctx){
+      if (ctx) {
         return !ctx
-        .getImageData(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height).data
-        .some(channel => channel !== 0);
-      }      
+          .getImageData(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height).data
+          .some(channel => channel !== 0);
+      }
     }
-    
+
     return true;
   }
 
