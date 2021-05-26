@@ -1,5 +1,5 @@
 <div class="p-fluid p-formgrid p-grid">
-    <div class="p-field p-col-6" *ngFor="let parameter of parameters; let i = index">
+    <div class="p-field p-col-12 p-lg-6" *ngFor="let parameter of parameters; let i = index">
         <label for="state">{{ parameter.displayName }}</label>
         <ng-container *ngIf="parameter.type === 'select'">
             <p-dropdown [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
@@ -14,7 +14,7 @@
         <ng-container *ngIf="parameter.type === 'multiSelect'">
             <p-multiSelect [inputId]="parameter.name" [options]="parameter.options ? parameter.options : []"
                 placeholder="Select few..." optionLabel="name" [formControl]="getControl(i)" [maxSelectedLabels]="3"
-                [ngClass]="{ 'invalid-field': getControl(i).invalid }">
+                [ngClass]="{ 'invalid-field': getControl(i).invalid }" [autofocusFilter]="false">
             </p-multiSelect>
         </ng-container>
         <ng-container *ngIf="parameter.type === 'text'">
