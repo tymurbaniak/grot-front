@@ -1,17 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ToolbarModule } from 'primeng/toolbar';
 import { AppComponent } from './app.component';
+import * as MockSignalRClient from '../testing/mockSignalR.js';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
+  beforeEach(async () => {    
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        ToolbarModule
       ],
       declarations: [
         AppComponent
       ],
-    }).compileComponents();
+    }).compileComponents()
+    .then(() => {
+    });
   });
 
   it('should create the app', () => {
@@ -24,12 +29,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('grot-front');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('grot-front app is running!');
   });
 });

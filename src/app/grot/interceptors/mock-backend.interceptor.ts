@@ -7,7 +7,7 @@ import { Parameters } from "./parameters";
 
 @Injectable()
 export class MockBackendInterceptor implements HttpInterceptor {
-
+  
   private request: HttpRequest<any> | undefined = undefined;
   private next: HttpHandler | undefined = undefined;
 
@@ -47,10 +47,16 @@ export class MockBackendInterceptor implements HttpInterceptor {
         return this.project(request.body.projectName);
       case url.endsWith('/grot/projects') && method === 'POST':
         return this.projectslist();
+      case url.endsWith('/weatherforecast') && method === 'GET':
+        return this.weatherforecast();
       default:
         // pass through any requests not handled above
         return next.handle(request);
     }
+  }
+
+  weatherforecast(): Observable<HttpEvent<any>> {
+    return this.ok({});
   }
 
   private parameters = (): Observable<HttpEvent<any>> => {
