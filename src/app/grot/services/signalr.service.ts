@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/auth/services/authentication.service';
 import { ComService } from './com.service';
 import { ISignalRService } from './signalR-interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class SignalrService implements ISignalRService {
@@ -19,6 +20,11 @@ export class SignalrService implements ISignalRService {
   }
 
   public connect(messageService: MessageService): void {
+    //TODO: testing with signalR
+    if(environment.disableSignalR){
+      return;
+    }
+
     const connection = new signalR.HubConnectionBuilder()
       .withUrl('/hub', {
         accessTokenFactory: () => this.authService.userValue.jwtToken as string

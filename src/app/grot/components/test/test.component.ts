@@ -20,26 +20,19 @@ export class TestComponent implements OnInit {
       this.forecast = result;
     });
 
-    const connection = new signalR.HubConnectionBuilder()
-      .configureLogging(signalR.LogLevel.Trace)
-      .withUrl(`/hub`)
-      .build();
+    // const connection = new signalR.HubConnectionBuilder()
+    //   .configureLogging(signalR.LogLevel.Trace)
+    //   .withUrl(`/hub`)
+    //   .build();
     
-    connection.on('receive', (message: string) => {   
-      console.info(`Message from signalR: ${message}`)    
-    });
+    // connection.on('receive', (message: string) => {   
+    //   console.info(`Message from signalR: ${message}`)    
+    // });
 
-    connection.start().then(() => {
-      console.info("SignalR connected");
-    }).catch((error) => {
-      console.error(error)
-    })
+    // connection.start().then(() => {
+    //   console.info("SignalR connected");
+    // }).catch((error) => {
+    //   console.error(error)
+    // })
   }
-
-  public testSignalR(): void {
-    this.http.get<any>(`${environment.apiUrl}/grot/signalrtest`).subscribe(result => {
-      console.info("TestsignalR response, but we are not waiting for this");
-    });
-  }
-
 }

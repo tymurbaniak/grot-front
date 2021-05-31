@@ -3,5 +3,6 @@ export const environment = {
   apiUrl: 'http://localhost:5000',
   docker: true,
   captcha: true,
-  mockBackend: false
+  mockBackend: false,
+  disableSignalR: false
 };

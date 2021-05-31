@@ -3,7 +3,8 @@ export const environment = {
   apiUrl: '/api',
   docker: false,
   captcha: false,
-  mockBackend: true
+  mockBackend: true,
+  disableSignalR: true
 };
 
 console.info(environment.apiUrl);
