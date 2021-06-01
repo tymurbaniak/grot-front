@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { RegistrationService } from '../../services/registration.service';
@@ -16,10 +16,10 @@ export class RegisterComponent implements OnInit {
 
   public registerForm = this.formBuilder.group({
     username: ['', Validators.required],
-    email: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     password1: ['', Validators.required],
     password2: ['', Validators.required]
-  });
+  }, { validators: passwordalidator });
 
   public loading = false;
   public errors: Message[] = [];
@@ -85,3 +85,20 @@ export class RegisterComponent implements OnInit {
     this.allowSubmit = false;
   }
 }
+
+export const passwordalidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const password1 = control.get('password1')?.value;
+  const password2 = control.get('password2')?.value;
+
+  const passwordRegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})');
+  const strengthOk = passwordRegExp.test(password1);
+
+  if(password1 && password2 && !(password1 === password2)){
+    return { wrongPassword: { doesNotMatch: true } }
+  }
+
+  if(!strengthOk){
+    return { wrongPassword: { strengthOk: false } }
+  }
+  return null;
+};
