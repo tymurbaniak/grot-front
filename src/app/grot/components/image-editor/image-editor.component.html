@@ -3,33 +3,50 @@
         <div class="p-inputgroup">
             <span class="p-buttonset">
                 <ng-container *ngFor="let color of colors">
-                    <button pButton type="button" *ngIf="color !== selectedColor" icon="pi" [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
-                    <button pButton type="button" *ngIf="color === selectedColor" icon="pi pi-check" [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
+                    <button pButton type="button" *ngIf="color !== selectedColor" icon="pi"
+                        [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
+                    <button pButton type="button" *ngIf="color === selectedColor" icon="pi pi-check"
+                        [ngStyle]="{ 'background-color': color}" (click)="setColor(color)"></button>
                 </ng-container>
-            </span>            
-        </div>    
+            </span>
+        </div>
+        <div class="p-inputgroup" style="margin-top: 5px;">
+            <span class="p-buttonset">
+                <button pButton #square type="button" class="p-button-outlined" icon="pi">
+                    <div class="square-shape"></div>
+                </button>
+                <button pButton #triangle type="button" class="p-button-outlined" icon="pi">
+                    <div class="triangle-shape"></div>
+                </button>
+                <button pButton #circle type="button" class="p-button-outlined" icon="pi">
+                    <div class="circle-shape"></div>
+                </button>
+                <button pButton type="button" class="p-button-outlined" icon="pi pi-table" (click)="toggleGrid()">
+                </button>
+            </span>
+        </div>
     </div>
     <div class="p-col-12 p-md-4">
-        <p-dropdown [(ngModel)]="selectedSize" [options]="sizes" placeholder="Brush size" (onChange)="sizeChanged($event)" optionLabel="name"></p-dropdown>
+        <p-dropdown [(ngModel)]="selectedSize" [options]="sizes" placeholder="Brush size"
+            (onChange)="sizeChanged($event)" optionLabel="name"></p-dropdown>
     </div>
 </div>
-<div>
-    <canvas id="canv" #canv class="canvas-style" 
-    (mousedown)="startDrawing($event)"
-    (mousemove)="drawing($event)"
-    (mouseup)="stopDrawing($event)"
-    (touchstart)="startDrawing($event)"
-    (touchmove)="drawing($event)"
-    (touchend)="stopDrawing($event)"
-    (window:resize)="onResize()"
-    (window:orientationchange)="onResize()"
-    ></canvas>
+<div style="position: relative;" class="canvas-style">
+    <canvas id="canv" #canv class="canvas-style draw-canvas" (mousedown)="startDrawing($event)"
+        (mousemove)="drawing($event)" (mouseup)="stopDrawing($event)" (touchstart)="startDrawing($event)"
+        (touchmove)="drawing($event)" (touchend)="stopDrawing($event)" (window:resize)="onResize()"
+        (window:orientationchange)="onResize()" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+    <canvas id="grid-layer" #grid class="canvas-style" (mousedown)="startDrawing($event)" (mousemove)="drawing($event)"
+        (mouseup)="stopDrawing($event)" (touchstart)="startDrawing($event)" (touchmove)="drawing($event)"
+        (touchend)="stopDrawing($event)" (window:resize)="onResize()" (window:orientationchange)="onResize()"
+        style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 </div>
 <p-toolbar>
     <div class="p-toolbar-group-left">
         <button pButton label="Process!" (click)="onProcessClicked($event)"></button>
     </div>
     <div class="p-toolbar-group-right">
-        <p-fileUpload #fileUpload [auto]="true" name="myfile[]" mode="basic" [customUpload]="true" (uploadHandler)="setCanvasImage($event)" chooseLabel="Upload image"></p-fileUpload>
+        <p-fileUpload #fileUpload [auto]="true" name="myfile[]" mode="basic" [customUpload]="true"
+            (uploadHandler)="setCanvasImage($event)" chooseLabel="Upload image"></p-fileUpload>
     </div>
 </p-toolbar>

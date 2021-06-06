@@ -1,36 +1,62 @@
 $toolbar-option-size: 2em;
 
 .canvas-style {
-    border: 1px solid #000; 
-    margin: 1px 0 0 0;
-    height: 355px;
-    display: block;
-    width: 100%;
-    margin: 10px 0 0 0;
+  border: 1px solid #000;  
+  height: 355px;
+  display: block;
+  width: 100%;  
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.draw-canvas {
+    overflow: visible;
 }
 
 .block {
-    display: block;
-    height: $toolbar-option-size;
+  display: block;
+  height: $toolbar-option-size;
 }
 
 .toolbar {
-    display: block;
+  display: block;
 }
 
 .toolbar li {
-    display: block;
-    float: left;
-    height: $toolbar-option-size;
-    width: $toolbar-option-size;
-    border: 1px solid #000;
+  display: block;
+  float: left;
+  height: $toolbar-option-size;
+  width: $toolbar-option-size;
+  border: 1px solid #000;
 }
 
-.size {    
-    text-align: center;
-    vertical-align: middle;    
+.size {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .toolbar {
-    display: inline;
+  display: inline;
+}
+
+.triangle-shape {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 14px solid #2196F3;
+}
+
+.circle-shape {
+  height: 14px;
+  width: 14px;
+  background-color: #2196F3;
+  border-radius: 50%;
+}
+
+.square-shape {
+  height: 14px;
+  width: 14px;
+  background-color: #2196F3;
 }

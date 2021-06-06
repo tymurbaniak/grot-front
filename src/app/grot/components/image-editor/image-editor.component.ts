@@ -16,6 +16,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   private context2d: CanvasRenderingContext2D | undefined;
   private penDown = false;
   private inputParameters: ParameterValue[] = [];
+  private gridDisplayed: boolean = false;
 
   public colors = ['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'];
   public sizes = [
@@ -36,6 +37,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   @ViewChild('canv', { static: true }) private canvas: ElementRef<HTMLCanvasElement> | undefined;
+  @ViewChild('grid', { static: true }) private grid: ElementRef<HTMLCanvasElement> | undefined;
   @ViewChild('fileUpload', { static: true }) private fileUpload: FileUpload | undefined;
 
   constructor(
@@ -74,6 +76,11 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       this.canvas.nativeElement.height = this.canvas.nativeElement.clientHeight;
       this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
       const context = this.canvas.nativeElement.getContext("2d");
+
+      if(this.grid){
+        this.grid.nativeElement.height = this.grid.nativeElement.clientHeight;
+        this.grid.nativeElement.width = this.grid.nativeElement.clientWidth;
+      }
 
       if (context) {
         context.drawImage(tmpCanvas, 0, 0, tmpCanvas.width, tmpCanvas.height, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
@@ -142,6 +149,33 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     return cords;
   }
 
+  private initialPosition: { x: number, y: number } | undefined = undefined;
+
+  public startDrawingSquare($event: MouseEvent | TouchEvent): void {
+    $event.preventDefault();
+    this.initialPosition = this.getMousePosition($event);
+    this.penDown = true;
+
+    if (this.initialPosition) {
+      this.context.beginPath();
+    }
+  }
+
+  public drawingSquare($event: MouseEvent | TouchEvent): void {
+
+  }
+
+  public stopDrawingSquare($event: MouseEvent | TouchEvent): void {
+    $event.preventDefault();
+    const position = this.getMousePosition($event);
+    this.penDown = false;
+
+    if (position) {
+      this.context.lineTo(position.x, position.y);
+      this.context.stroke();
+    }
+  }
+
   public setColor($color: string): void {
     this.selectedColor = $color;
     this.context.strokeStyle = $color;
@@ -206,6 +240,45 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     }
 
     return true;
+  }
+
+  public toggleGrid(): void {
+    if (this.gridDisplayed) {
+      if(this.grid){
+        this.gridDisplayed = false;
+        const ctx = this.grid.nativeElement.getContext("2d") as CanvasRenderingContext2D;
+        const width = this.grid.nativeElement.width;
+        const height = this.grid.nativeElement.height;
+
+        ctx.clearRect(0, 0, width, height);
+      }
+    } else {
+      if (this.grid) {
+        this.gridDisplayed = true;
+        const ctx = this.grid.nativeElement.getContext("2d") as CanvasRenderingContext2D;
+        const width = this.grid.nativeElement.width;
+        const height = this.grid.nativeElement.height;
+        ctx.lineWidth = 1;
+
+        const numberOfLines = 5;
+
+        for (let i = 1; i <= numberOfLines; i++) {
+          const x = Math.floor((width * i) / numberOfLines) + 0.5;
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+
+        for (let i = 1; i <= numberOfLines; i++) {
+          const y = Math.floor((height * i) / numberOfLines) + 0.5;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+      }
+    }
   }
 
 }
