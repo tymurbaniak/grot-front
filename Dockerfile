@@ -1,12 +1,12 @@
 FROM node:alpine AS build
 RUN mkdir /usr/src
 RUN mkdir /usr/src/app 
-WORKDIR /usr/src/app
+RUN mkdir /usr/src/app/grot-front
+WORKDIR /usr/src/app/grot-front
 
 COPY . .
 RUN npm install
 
-WORKDIR /usr/src/app/grot-front
 CMD envsubst ./src/environments/environment.template.ts > ./src/environments/environment.ts
 RUN npm ci && npm run build --prod
 
