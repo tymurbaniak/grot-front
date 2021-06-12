@@ -45,17 +45,18 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
 
   @ViewChild('canv', { static: true }) private canvas: ElementRef<HTMLCanvasElement> | undefined;
   @ViewChild('grid', { static: true }) private grid: ElementRef<HTMLCanvasElement> | undefined;
+  @ViewChild('outline', { static: true }) private outline: ElementRef<HTMLCanvasElement> | undefined;
   @ViewChild('fileUpload', { static: true }) private fileUpload: FileUpload | undefined;
 
   constructor(
     private processService: ProcessService,
     private comService: ComService,
     private messageService: MessageService
-  ) {    
+  ) {
   }
 
   ngOnInit(): void {
-    this.comService.parameters$.subscribe(parameters => {
+    this.comService.parameters$.subscribe((parameters: any) => {
       this.inputParameters = parameters;
     });
   }
@@ -63,11 +64,11 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   public ngAfterViewInit(): void {
     this.onResize();
 
-    if (this.canvas) {
+    if (this.canvas && this.outline) {
       this.context = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
       this.context.fillStyle = "white";
       this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-      this._drafter = new Drafter(this.canvas.nativeElement, Shape.line, this.penDown);
+      this._drafter = new Drafter(this.canvas.nativeElement, this.outline.nativeElement, Shape.line, this.penDown);
       this.context.fillStyle = this.context.strokeStyle;
     }
   }
@@ -90,6 +91,11 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       if (this.grid) {
         this.grid.nativeElement.height = this.grid.nativeElement.clientHeight;
         this.grid.nativeElement.width = this.grid.nativeElement.clientWidth;
+      }
+
+      if (this.outline) {
+        this.outline.nativeElement.height = this.outline.nativeElement.clientHeight;
+        this.outline.nativeElement.width = this.outline.nativeElement.clientWidth;
       }
 
       if (context) {
@@ -116,6 +122,12 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     this.selectedColor = $color;
     this.context.strokeStyle = $color;
     this.context.fillStyle = $color;
+
+    if (this.outline) {
+      const outlineCtx = this.outline.nativeElement.getContext("2d") as CanvasRenderingContext2D;
+      outlineCtx.fillStyle = $color;
+      outlineCtx.strokeStyle = $color;
+    }
   }
 
   public sizeChanged($size: any): void {
@@ -154,7 +166,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     if (this.canvas) {
       const canvasDataUrl = this.canvas.nativeElement.toDataURL();
 
-      this.processService.process(this.inputParameters, canvasDataUrl).subscribe((process) => {
+      this.processService.process(this.inputParameters, canvasDataUrl).subscribe((process: any) => {
         if (process.started) {
           console.log("Process started");
           this.messageService.add({ severity: 'success', summary: 'Processing started', detail: '' });
@@ -179,8 +191,16 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     return true;
   }
 
-  public selectShape(shape: Shape){
+  public selectShape(shape: Shape) {
     this.drafter.selectShape(shape);
+  }
+
+  public clearCanvas() {
+    if (this.canvas) {
+      this.context.fillStyle = "white";
+      this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      this.context.fillStyle = this.selectedColor;
+    }
   }
 
   public toggleGrid(): void {

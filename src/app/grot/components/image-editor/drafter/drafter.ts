@@ -15,6 +15,7 @@ export class Drafter implements IDrafter {
 
   constructor(
     private canvas: HTMLCanvasElement,
+    private outline: HTMLCanvasElement,
     private shape: Shape,
     private penDown: boolean
   ) {
@@ -25,17 +26,17 @@ export class Drafter implements IDrafter {
     switch (shape) {
       case Shape.rectangle:
         {
-          this._drafter = new RectangleDrafter(this.canvas, this.penDown);
+          this._drafter = new RectangleDrafter(this.canvas, this.outline, this.penDown);
         }
         break;
       case Shape.triangle:
         {
-          this._drafter = new TriangleDrafter(this.canvas, this.penDown);
+          this._drafter = new TriangleDrafter(this.canvas, this.outline, this.penDown);
         }
         break;
       case Shape.circle:
         {
-          this._drafter = new ElipseDrafter(this.canvas, this.penDown);
+          this._drafter = new ElipseDrafter(this.canvas, this.outline, this.penDown);
         }
         break;
       case Shape.line:

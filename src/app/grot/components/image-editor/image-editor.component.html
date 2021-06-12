@@ -60,7 +60,7 @@
                     class="p-button-outlined"
                     icon="pi pi-pencil"
                     (click)="selectShape(shape.line)"
-                >                    
+                >
                 </button>
                 <button
                     pButton
@@ -68,6 +68,14 @@
                     class="p-button-outlined"
                     icon="pi pi-table"
                     (click)="toggleGrid()"
+                >
+                </button>
+                <button
+                    pButton
+                    type="button"
+                    class="p-button-outlined"
+                    icon="pi pi-trash"
+                    (click)="clearCanvas()"
                 >
                 </button>
             </span>
@@ -88,22 +96,8 @@
     class="canvas-style"
 >
     <canvas
-        id="canv"
-        #canv
-        class="canvas-style draw-canvas"
-        (mousedown)="startDrawing($event)"
-        (mousemove)="drawing($event)"
-        (mouseup)="stopDrawing($event)"
-        (touchstart)="startDrawing($event)"
-        (touchmove)="drawing($event)"
-        (touchend)="stopDrawing($event)"
-        (window:resize)="onResize()"
-        (window:orientationchange)="onResize()"
-        style="position: absolute; left: 0; top: 0; z-index: 0;"
-    ></canvas>
-    <canvas
-        id="grid-layer"
-        #grid
+        id="outline-layer"
+        #outline
         class="canvas-style"
         (mousedown)="startDrawing($event)"
         (mousemove)="drawing($event)"
@@ -113,8 +107,28 @@
         (touchend)="stopDrawing($event)"
         (window:resize)="onResize()"
         (window:orientationchange)="onResize()"
+        style="position: absolute; left: 0; top: 0; z-index: 2;"
+    ></canvas>
+    <canvas
+        id="grid-layer"
+        #grid
+        class="canvas-style"
+        (window:resize)="onResize()"
+        (window:orientationchange)="onResize()"
         style="position: absolute; left: 0; top: 0; z-index: 1;"
     ></canvas>
+    <canvas
+        id="canv"
+        #canv
+        class="canvas-style draw-canvas"
+        (window:resize)="onResize()"
+        (window:orientationchange)="onResize()"
+        style="position: absolute; left: 0; top: 0; z-index: 0;"
+    ></canvas>
+
+
+
+
 </div>
 <p-toolbar>
     <div class="p-toolbar-group-left">
