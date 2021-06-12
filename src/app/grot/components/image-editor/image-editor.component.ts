@@ -5,6 +5,8 @@ import { ComService } from '../../services/com.service';
 import { ProcessService } from '../../services/process.service';
 import { MessageService } from 'primeng/api';
 import { ProcessValidator } from '../../services/process-validator';
+import { Drafter } from './drafter/drafter';
+import { Shape } from './drafter/e-shape';
 
 @Component({
   selector: 'app-image-editor',
@@ -17,6 +19,10 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   private penDown = false;
   private inputParameters: ParameterValue[] = [];
   private gridDisplayed: boolean = false;
+  private _drafter: Drafter | undefined;
+  private get drafter(): Drafter {
+    return this._drafter as Drafter;
+  }
 
   public colors = ['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'];
   public sizes = [
@@ -27,6 +33,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   ];
   public selectedColor = '#000';
   public selectedSize = '3';
+  public shape = Shape;
 
   set context(ctx: CanvasRenderingContext2D) {
     this.context2d = ctx;
@@ -44,7 +51,8 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     private processService: ProcessService,
     private comService: ComService,
     private messageService: MessageService
-  ) { }
+  ) {    
+  }
 
   ngOnInit(): void {
     this.comService.parameters$.subscribe(parameters => {
@@ -59,6 +67,8 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       this.context = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
       this.context.fillStyle = "white";
       this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      this._drafter = new Drafter(this.canvas.nativeElement, Shape.line, this.penDown);
+      this.context.fillStyle = this.context.strokeStyle;
     }
   }
 
@@ -77,7 +87,7 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
       this.canvas.nativeElement.width = this.canvas.nativeElement.clientWidth;
       const context = this.canvas.nativeElement.getContext("2d");
 
-      if(this.grid){
+      if (this.grid) {
         this.grid.nativeElement.height = this.grid.nativeElement.clientHeight;
         this.grid.nativeElement.width = this.grid.nativeElement.clientWidth;
       }
@@ -91,94 +101,21 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
   }
 
   public startDrawing($event: MouseEvent | TouchEvent): void {
-    $event.preventDefault();
-    const position = this.getMousePosition($event);
-    this.penDown = true;
-
-    if (position) {
-      this.context.beginPath();
-      this.context.moveTo(position.x, position.y);
-      this.context.stroke();
-    }
+    this.drafter.startDrawing($event);
   }
 
   public drawing($event: MouseEvent | TouchEvent): void {
-    $event.preventDefault();
-    if (this.penDown) {
-      const position = this.getMousePosition($event);
-
-      if (position) {
-        this.context.lineTo(position.x, position.y);
-        this.context.stroke();
-      }
-    }
+    this.drafter.drawing($event);
   }
 
   public stopDrawing($event: MouseEvent | TouchEvent): void {
-    $event.preventDefault();
-    const position = this.getMousePosition($event);
-    this.penDown = false;
-
-    if (position) {
-      this.context.lineTo(position.x, position.y);
-      this.context.stroke();
-    }
-  }
-
-  private getMousePosition($event: MouseEvent | TouchEvent): { x: number, y: number } | undefined {
-    let cords = { x: 0, y: 0 };
-
-    if ($event instanceof (MouseEvent)) {
-      if (this.canvas) {
-        const rect = this.canvas.nativeElement.getBoundingClientRect();
-        cords.x = $event.clientX - rect.left;
-        cords.y = $event.clientY - rect.top;
-      }
-    }
-
-    if (window.TouchEvent && $event instanceof (TouchEvent)) {
-      if (this.canvas && $event.touches[0]) {
-        const rect = this.canvas.nativeElement.getBoundingClientRect();
-        cords.x = $event.touches[0].clientX - rect.left;
-        cords.y = $event.touches[0].clientY - rect.top;
-      } else {
-        return undefined;
-      }
-    }
-
-    return cords;
-  }
-
-  private initialPosition: { x: number, y: number } | undefined = undefined;
-
-  public startDrawingSquare($event: MouseEvent | TouchEvent): void {
-    $event.preventDefault();
-    this.initialPosition = this.getMousePosition($event);
-    this.penDown = true;
-
-    if (this.initialPosition) {
-      this.context.beginPath();
-    }
-  }
-
-  public drawingSquare($event: MouseEvent | TouchEvent): void {
-
-  }
-
-  public stopDrawingSquare($event: MouseEvent | TouchEvent): void {
-    $event.preventDefault();
-    const position = this.getMousePosition($event);
-    this.penDown = false;
-
-    if (position) {
-      this.context.lineTo(position.x, position.y);
-      this.context.stroke();
-    }
+    this.drafter.stopDrawing($event);
   }
 
   public setColor($color: string): void {
     this.selectedColor = $color;
     this.context.strokeStyle = $color;
+    this.context.fillStyle = $color;
   }
 
   public sizeChanged($size: any): void {
@@ -242,9 +179,13 @@ export class ImageEditorComponent implements AfterViewInit, OnInit {
     return true;
   }
 
+  public selectShape(shape: Shape){
+    this.drafter.selectShape(shape);
+  }
+
   public toggleGrid(): void {
     if (this.gridDisplayed) {
-      if(this.grid){
+      if (this.grid) {
         this.gridDisplayed = false;
         const ctx = this.grid.nativeElement.getContext("2d") as CanvasRenderingContext2D;
         const width = this.grid.nativeElement.width;
