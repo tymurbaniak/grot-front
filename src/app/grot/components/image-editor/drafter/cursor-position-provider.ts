@@ -1,5 +1,11 @@
 export class CursorPostionProvider {
 
+  private _touch: Touch | undefined;
+
+  private get lastTouch(): Touch {
+    return this._touch as Touch;
+  }
+
   constructor(private canvas: HTMLCanvasElement){
 
   }
@@ -16,12 +22,14 @@ export class CursorPostionProvider {
     }
 
     if (window.TouchEvent && $event instanceof (TouchEvent)) {
-      if (this.canvas && $event.touches[0]) {
-        const rect = this.canvas.getBoundingClientRect();
+      const rect = this.canvas.getBoundingClientRect();
+      if ($event.touches[0]) {        
         cords.x = $event.touches[0].clientX - rect.left;
         cords.y = $event.touches[0].clientY - rect.top;
+        this._touch = $event.touches[0];
       } else {
-        return undefined;
+        cords.x = this.lastTouch.clientX - rect.left;
+        cords.y = this.lastTouch.clientY - rect.top;
       }
     }
 
